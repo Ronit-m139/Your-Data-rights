@@ -72,6 +72,36 @@
       box-shadow:0 6px 24px rgba(0,0,0,.3);
     }
 
+/* Custom cursor */
+body { cursor: none !important; }
+
+#cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #00c8ff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(0,200,255,.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width .3s, height .3s;
+}
+
+
+   
     .action-header {
       display:flex;
       align-items:center;
@@ -205,7 +235,8 @@
 </head>
 
 <body>
-
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 <div class="atmos">
   <div class="grid"></div>
   <div class="glow-a"></div>
@@ -360,6 +391,57 @@
 
 </div>
 
+<script>
+(function() {
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  /* elements that trigger hover expansion */
+  const interactive = '.action-card, .right-card, .tool-link';
+
+  document.addEventListener('mouseover', e => {
+    if (e.target.matches(interactive) || e.target.closest(interactive)) {
+      cursor.style.width = '18px';
+      cursor.style.height = '18px';
+      cursor.style.background = 'rgba(0,200,255,0.3)';
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+    }
+  });
+
+  document.addEventListener('mouseout', e => {
+    if (e.target.matches(interactive) || e.target.closest(interactive)) {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      cursor.style.background = '#00c8ff';
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+    }
+  });
+})();
+</script>
+
+
+   
 <script>
 const reveals = document.querySelectorAll('.reveal');
 
