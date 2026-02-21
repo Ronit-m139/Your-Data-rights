@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Your Data Rights</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#04090f; --card:#0b1622; --border:rgba(0,200,255,0.09); --border2:rgba(0,200,255,0.22);
+      --cyan:#00c8ff; --pink:#ff3d6e; --green:#39ff8f; --gold:#ffd166; --purple:#b46fff;
+      --text:#b8d4e0; --muted:#4e6e80; --head:#e4f2f8;
+      --mono:'Space Mono',monospace; --display:'Syne',sans-serif; --body:'DM Sans',sans-serif;
+    }
+    html,body { background:var(--bg); font-family:var(--body); color:var(--text); overflow-x:hidden; }
+
+    .atmos { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .grid { position:absolute; inset:0; background-image:linear-gradient(rgba(0,200,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.035) 1px,transparent 1px); background-size:64px 64px; mask-image:radial-gradient(ellipse 90% 80% at 50% 20%,black 5%,transparent 75%); }
+    .glow-a { position:absolute; border-radius:50%; width:700px; height:700px; top:-200px; right:-180px; background:radial-gradient(circle,rgba(0,200,255,.07),transparent 68%); animation:gp 9s ease-in-out infinite; }
+    .glow-b { position:absolute; border-radius:50%; width:500px; height:500px; bottom:20%; left:-100px; background:radial-gradient(circle,rgba(255,61,110,.05),transparent 68%); animation:gp 13s ease-in-out infinite reverse; }
+    .noise { position:absolute; inset:0; opacity:.04; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    @keyframes gp { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+    .page { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:64px 32px 100px; }
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.on { opacity:1; transform:none; }
+
+    .page-header { margin-bottom:60px; opacity:0; transform:translateY(16px); animation:fadeUp .7s ease forwards .1s; }
+    .page-eyebrow { font-family:var(--mono); font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--green); display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .page-eyebrow::before { content:''; width:28px; height:1px; background:var(--green); opacity:.6; }
+    .page-title { font-family:var(--display); font-weight:800; font-size:clamp(2.4rem,5vw,4rem); line-height:1.1; letter-spacing:-.03em; color:var(--head); margin-bottom:16px; }
+    .page-title span { color:var(--green); }
+    .page-intro { font-size:clamp(.95rem,1.5vw,1.05rem); color:var(--muted); line-height:1.8; max-width:640px; margin-bottom:20px; }
+    .outcome-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .outcome-tag { display:inline-flex; align-items:center; gap:7px; font-family:var(--mono); font-size:.53rem; letter-spacing:.1em; text-transform:uppercase; color:var(--green); border:1px solid rgba(57,255,143,.25); background:rgba(57,255,143,.06); border-radius:4px; padding:5px 11px; }
+
+    .section { margin-bottom:68px; }
+    .section-label { font-family:var(--mono); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:14px; margin-bottom:28px; }
+    .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .body-text { font-size:.97rem; color:var(--text); line-height:1.85; margin-bottom:18px; }
+    .body-text strong { color:var(--head); font-weight:500; }
+
+    /* Action cards */
+    .action-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:28px; }
+    .action-card {
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      transition:border-color .3s,transform .3s,box-shadow .3s;
+      cursor:default;
+    }
+    .action-card::before {
+      content:'';
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width:4px;
+    }
+    .action-card:nth-child(1)::before { background:var(--green); }
+    .action-card:nth-child(2)::before { background:var(--cyan); }
+    .action-card:nth-child(3)::before { background:var(--pink); }
+    .action-card:nth-child(4)::before { background:var(--gold); }
+    .action-card:nth-child(5)::before { background:var(--purple); }
+
+    .action-card:hover {
+      border-color:var(--border2);
+      transform:translateX(6px);
+      box-shadow:0 6px 24px rgba(0,0,0,.3);
+    }
+
+    .action-header {
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:14px;
+    }
+    .action-num {
+      width:40px; height:40px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:var(--mono);
+      font-size:1.1rem;
+      font-weight:700;
+      flex-shrink:0;
+      transition:transform .3s;
+    }
+    .action-card:hover .action-num { transform:scale(1.1); }
+    .action-card:nth-child(1) .action-num { background:rgba(57,255,143,.1); color:var(--green); }
+    .action-card:nth-child(2) .action-num { background:rgba(0,200,255,.1); color:var(--cyan); }
+    .action-card:nth-child(3) .action-num { background:rgba(255,61,110,.1); color:var(--pink); }
+    .action-card:nth-child(4) .action-num { background:rgba(255,209,102,.1); color:var(--gold); }
+    .action-card:nth-child(5) .action-num { background:rgba(180,100,255,.1); color:var(--purple); }
+
+    .action-card h3 {
+      font-family:var(--display);
+      font-weight:700;
+      font-size:1.1rem;
+      color:var(--head);
+      flex:1;
+      transition:color .3s;
+    }
+    .action-card:hover h3 { color:#fff; }
+
+    .action-card p {
+      font-size:.88rem;
+      color:var(--muted);
+      line-height:1.75;
+      margin-bottom:14px;
+    }
+
+    .action-steps {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(0,200,255,.08);
+    }
+    .action-step {
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      font-size:.84rem;
+      color:var(--text);
+      line-height:1.65;
+    }
+    .action-step::before {
+      content:'→';
+      color:var(--green);
+      font-family:var(--mono);
+      font-weight:700;
+      flex-shrink:0;
+    }
+    .action-card:nth-child(2) .action-step::before { color:var(--cyan); }
+    .action-card:nth-child(3) .action-step::before { color:var(--pink); }
+    .action-card:nth-child(4) .action-step::before { color:var(--gold); }
+    .action-card:nth-child(5) .action-step::before { color:var(--purple); }
+
+    /* Rights grid */
+    .rights-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:28px; }
+    .right-card {
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:20px;
+      transition:border-color .3s,transform .3s,box-shadow .3s;
+      cursor:default;
+    }
+    .right-card:hover {
+      border-color:var(--border2);
+      transform:translateY(-4px);
+      box-shadow:0 8px 24px rgba(0,0,0,.3);
+    }
+    .right-card h4 {
+      font-family:var(--display);
+      font-weight:700;
+      font-size:.98rem;
+      color:var(--head);
+      margin-bottom:8px;
+      transition:color .3s;
+    }
+    .right-card:hover h4 { color:#fff; }
+    .right-card p {
+      font-size:.82rem;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    /* Tool links */
+    .tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:28px; }
+    .tool-link {
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      text-align:center;
+      transition:border-color .3s,transform .3s;
+      cursor:pointer;
+      text-decoration:none;
+      display:block;
+    }
+    .tool-link:hover {
+      border-color:var(--border2);
+      transform:translateY(-3px);
+    }
+    .tool-link span {
+      font-family:var(--mono);
+      font-size:.75rem;
+      color:var(--text);
+      display:block;
+    }
+
+    @keyframes fadeUp { to { opacity:1; transform:none; } }
+    @media(max-width:640px) {
+      .page{padding:48px 18px 80px}
+      .rights-grid,.tool-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="atmos">
+  <div class="grid"></div>
+  <div class="glow-a"></div>
+  <div class="glow-b"></div>
+  <div class="noise"></div>
+</div>
+
+<div class="page">
+
+  <div class="page-header">
+    <p class="page-eyebrow">Your Data Rights</p>
+    <h1 class="page-title">What You Can <span>Do</span></h1>
+    <p class="page-intro">
+      Data collections is intrusive; however, you are are not powerless. This page shows the steps you can take to protect your privacy, understand your legal rights as an Australian, and also reduce the amount of data platforms collect about you,
+    </p>
+
+    <div class="outcome-row">
+      <span class="outcome-tag">EC-11-11 — Communicates to intended audience</span>
+    </div>
+  </div>
+
+ <div class="section reveal">
+    <p class="section-label">01 // Immediate actions you can take</p>
+    <p class="body-text">These are concrete steps you can implement today. They won't eliminate data collection entirely, but they will significantly reduce the volume of data platforms can collect and monetise.</p>
+
+    <div class="action-grid">
+
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-num">01</div>
+          <h3>Review Your Privacy Settings</h3>
+        </div>
+        <p>Most platforms bury privacy controls deep in settings menus. Take 10 minutes to review and restrict data collection permissions on the platforms you use most.</p>
+        <div class="action-steps">
+          <div class="action-step">Go to Settings → Privacy on each app you use regularly</div>
+          <div class="action-step">Turn off "Personalised Ads" or "Ad Personalisation"</div>
+          <div class="action-step">Disable location tracking unless absolutely necessary</div>
+          <div class="action-step">Revoke microphone and camera access from apps that don't need them</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-num">02</div>
+          <h3>Use Privacy-Focused Tools</h3>
+        </div>
+        <p>Switch to browsers, search engines and messaging apps that don't track you. These tools are free and work just as well as the data-harvesting alternatives.</p>
+        <div class="action-steps">
+          <div class="action-step">Browser: Firefox or Brave (instead of Chrome)</div>
+          <div class="action-step">Search Engine: DuckDuckGo (instead of Google)</div>
+          <div class="action-step">Messaging: Signal (instead of WhatsApp/Messenger)</div>
+          <div class="action-step">Install uBlock Origin browser extension to block trackers</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-num">03</div>
+          <h3>Limit What You Share</h3>
+        </div>
+        <p>Every post, like and comment adds to your profile. Be deliberate about what you share publicly and what data you volunteer to platforms.</p>
+        <div class="action-steps">
+          <div class="action-step">Review who can see your posts (Friends only vs Public)</div>
+          <div class="action-step">Avoid "Sign in with Google/Facebook" — create separate accounts</div>
+          <div class="action-step">Don't fill out optional profile fields (relationship status, employer, etc.)</div>
+          <div class="action-step">Use a separate email for signups (not your main email)</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-num">04</div>
+          <h3>Request Your Data</h3>
+        </div>
+        <p>Under Australian law, you have the right to request a copy of the data companies hold about you. This is called a "Data Access Request" and platforms are legally required to comply.</p>
+        <div class="action-steps">
+          <div class="action-step">Go to Settings → Privacy → Download Your Data on major platforms</div>
+          <div class="action-step">Wait 1-2 weeks for the data file to be prepared</div>
+          <div class="action-step">Review what they've collected — you'll be surprised</div>
+          <div class="action-step">Use this to inform which platforms you want to continue using</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-num">05</div>
+          <h3>Delete Old Accounts</h3>
+        </div>
+        <p>That social media account you haven't used in 3 years? Still collecting and selling your data. Delete accounts you no longer actively use.</p>
+        <div class="action-steps">
+          <div class="action-step">Make a list of all accounts you've created but no longer use</div>
+          <div class="action-step">Visit each platform's account deletion page (not just deactivation)</div>
+          <div class="action-step">Request full data deletion (some platforms retain data otherwise)</div>
+          <div class="action-step">Check your email for confirmation of deletion</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <p class="section-label">02 // Your legal rights as an Australian</p>
+    <p class="body-text">The Privacy Act 1988 and the Australian Privacy Principles (APPs) give you certain rights. Knowing these rights helps you hold platforms accountable.</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <h4>Right to Access</h4>
+        <p>You can request a copy of all personal information an organisation holds about you. They must provide this within 30 days.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to Correction</h4>
+        <p>If data about you is inaccurate, you can request it be corrected. The organisation must update their records or explain why they won't.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to Complain</h4>
+        <p>If a company mishandles your data, you can lodge a complaint with the Office of the Australian Information Commissioner (OAIC).</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to Know Why</h4>
+        <p>Organisations must tell you why they're collecting your data and how it will be used. If they can't explain, they shouldn't collect it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <p class="section-label">03 // Useful tools & resources</p>
+    <p class="body-text">These free tools help you take control of your digital privacy.</p>
+
+    <div class="tool-grid">
+      <div class="tool-link">
+        <span>Privacy Badger</span>
+      </div>
+      <div class="tool-link">
+        <span>uBlock Origin</span>
+      </div>
+      <div class="tool-link">
+        <span>DuckDuckGo</span>
+      </div>
+      <div class="tool-link">
+        <span>Firefox Browser</span>
+      </div>
+      <div class="tool-link">
+        <span>Signal Messenger</span>
+      </div>
+      <div class="tool-link">
+        <span>Bitwarden</span>
+      </div>
+    </div>
+
+    <p class="body-text"><strong>Government resources:</strong> The Office of the Australian Information Commissioner (OAIC) has guides on your privacy rights at <strong>oaic.gov.au</strong>. The eSafety Commissioner also provides resources for young people at <strong>esafety.gov.au</strong>.</p>
+  </div>
+
+</div>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('on');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+
+reveals.forEach(r => obs.observe(r));
+</script>
+
+</body>
+</html>
