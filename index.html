@@ -100,8 +100,6 @@ body { cursor: none !important; }
   transition: width .3s, height .3s;
 }
 
-
-   
     .action-header {
       display:flex;
       align-items:center;
@@ -226,10 +224,279 @@ body { cursor: none !important; }
       display:block;
     }
 
+    /* QUIZ STYLES */
+    .quiz-section {
+      background:linear-gradient(135deg,rgba(57,255,143,.08) 0%,rgba(0,200,255,.08) 100%);
+      border:1px solid rgba(57,255,143,.15);
+      border-radius:12px;
+      padding:40px;
+      margin-top:68px;
+    }
+
+    .quiz-header {
+      margin-bottom:36px;
+      text-align:center;
+    }
+
+    .quiz-header h2 {
+      font-family:var(--display);
+      font-weight:800;
+      font-size:clamp(1.8rem,4vw,2.4rem);
+      color:var(--head);
+      margin-bottom:12px;
+    }
+
+    .quiz-header p {
+      color:var(--muted);
+      font-size:.98rem;
+      max-width:500px;
+      margin:0 auto;
+      line-height:1.8;
+    }
+
+    .quiz-progress {
+      margin-bottom:28px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .quiz-progress-bar {
+      flex:1;
+      height:6px;
+      background:rgba(0,200,255,.1);
+      border-radius:3px;
+      overflow:hidden;
+    }
+
+    .quiz-progress-fill {
+      height:100%;
+      background:linear-gradient(90deg,var(--cyan),var(--green));
+      transition:width .4s ease;
+    }
+
+    .quiz-progress-text {
+      font-family:var(--mono);
+      font-size:.75rem;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .quiz-container {
+      display:none;
+    }
+
+    .quiz-container.active {
+      display:block;
+      animation:slideIn .5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity:0;
+        transform:translateY(12px);
+      }
+      to {
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .quiz-question {
+      margin-bottom:28px;
+    }
+
+    .quiz-question h3 {
+      font-family:var(--display);
+      font-weight:700;
+      font-size:1.15rem;
+      color:var(--head);
+      margin-bottom:20px;
+      line-height:1.5;
+    }
+
+    .quiz-options {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .quiz-option {
+      background:rgba(0,200,255,.05);
+      border:1.5px solid rgba(0,200,255,.15);
+      border-radius:8px;
+      padding:16px;
+      cursor:pointer;
+      transition:all .3s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .quiz-option::before {
+      content:'';
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:3px;
+      background:var(--cyan);
+      opacity:0;
+      transition:opacity .3s;
+    }
+
+    .quiz-option:hover {
+      border-color:var(--cyan);
+      background:rgba(0,200,255,.12);
+      transform:translateX(6px);
+    }
+
+    .quiz-option.selected {
+      background:rgba(57,255,143,.15);
+      border-color:var(--green);
+    }
+
+    .quiz-option.selected::before {
+      opacity:1;
+      background:var(--green);
+    }
+
+    .quiz-option.correct {
+      background:rgba(57,255,143,.2);
+      border-color:var(--green);
+    }
+
+    .quiz-option.correct::before {
+      opacity:1;
+      background:var(--green);
+    }
+
+    .quiz-option.incorrect {
+      background:rgba(255,61,110,.15);
+      border-color:var(--pink);
+    }
+
+    .quiz-option.incorrect::before {
+      opacity:1;
+      background:var(--pink);
+    }
+
+    .quiz-option-text {
+      font-size:.95rem;
+      color:var(--text);
+      padding-left:12px;
+    }
+
+    .quiz-feedback {
+      margin-top:16px;
+      padding:14px;
+      border-radius:6px;
+      font-size:.88rem;
+      line-height:1.7;
+      display:none;
+    }
+
+    .quiz-feedback.show {
+      display:block;
+      animation:slideIn .4s ease;
+    }
+
+    .quiz-feedback.correct {
+      background:rgba(57,255,143,.12);
+      border-left:3px solid var(--green);
+      color:rgba(57,255,143,.9);
+    }
+
+    .quiz-feedback.incorrect {
+      background:rgba(255,61,110,.12);
+      border-left:3px solid var(--pink);
+      color:rgba(255,61,110,.9);
+    }
+
+    .quiz-button-group {
+      display:flex;
+      gap:12px;
+      margin-top:32px;
+      justify-content:center;
+    }
+
+    .quiz-button {
+      font-family:var(--display);
+      font-weight:700;
+      font-size:.9rem;
+      padding:12px 28px;
+      border:1.5px solid var(--cyan);
+      background:transparent;
+      color:var(--cyan);
+      border-radius:6px;
+      cursor:pointer;
+      transition:all .3s;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+    }
+
+    .quiz-button:hover {
+      background:rgba(0,200,255,.1);
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(0,200,255,.2);
+    }
+
+    .quiz-button.primary {
+      background:linear-gradient(135deg,var(--cyan),var(--green));
+      border-color:transparent;
+      color:#000;
+    }
+
+    .quiz-button.primary:hover {
+      box-shadow:0 6px 20px rgba(0,200,255,.4);
+    }
+
+    .quiz-button:disabled {
+      opacity:.5;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .quiz-results {
+      text-align:center;
+      display:none;
+    }
+
+    .quiz-results.show {
+      display:block;
+      animation:slideIn .5s ease;
+    }
+
+    .quiz-score {
+      font-size:3rem;
+      font-weight:800;
+      font-family:var(--display);
+      background:linear-gradient(135deg,var(--cyan),var(--green));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+    }
+
+    .quiz-results-text {
+      font-size:1.1rem;
+      color:var(--head);
+      margin-bottom:24px;
+      line-height:1.7;
+    }
+
+    .quiz-results-detail {
+      font-size:.9rem;
+      color:var(--muted);
+      margin-bottom:32px;
+      line-height:1.8;
+    }
+
     @keyframes fadeUp { to { opacity:1; transform:none; } }
     @media(max-width:640px) {
       .page{padding:48px 18px 80px}
       .rights-grid,.tool-grid{grid-template-columns:1fr}
+      .quiz-section{padding:28px 20px}
+      .quiz-option{padding:14px}
     }
   </style>
 </head>
@@ -250,7 +517,7 @@ body { cursor: none !important; }
     <p class="page-eyebrow">Your Data Rights</p>
     <h1 class="page-title">What You Can <span>Do</span></h1>
     <p class="page-intro">
-      Data collections is intrusive; however, you are are not powerless. This page shows the steps you can take to protect your privacy, understand your legal rights as an Australian, and also reduce the amount of data platforms collect about you,
+      Data collection is intrusive; however, you are not powerless. This page shows the steps you can take to protect your privacy, understand your legal rights as an Australian, and also reduce the amount of data platforms collect about you.
     </p>
 
     <div class="outcome-row">
@@ -389,9 +656,262 @@ body { cursor: none !important; }
     <p class="body-text"><strong>Government resources:</strong> The Office of the Australian Information Commissioner (OAIC) has guides on your privacy rights at <strong>oaic.gov.au</strong>. The eSafety Commissioner also provides resources for young people at <strong>esafety.gov.au</strong>.</p>
   </div>
 
+  <!-- QUIZ SECTION -->
+  <div class="section reveal quiz-section">
+    <div class="quiz-header">
+      <h2>Quick Refresher Quiz</h2>
+      <p>Test your knowledge of data rights and privacy protection. This quiz reinforces the key concepts from the content above.</p>
+    </div>
+
+    <div class="quiz-progress">
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progressFill"></div>
+      </div>
+      <div class="quiz-progress-text"><span id="currentQuestion">1</span>/<span id="totalQuestions">5</span></div>
+    </div>
+
+    <div id="quizContent">
+      <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <div class="quiz-button-group">
+      <button class="quiz-button" id="prevBtn" onclick="previousQuestion()">← Previous</button>
+      <button class="quiz-button primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+      <button class="quiz-button primary" id="submitBtn" onclick="submitQuiz()" style="display:none;">Submit Quiz</button>
+      <button class="quiz-button primary" id="restartBtn" onclick="restartQuiz()" style="display:none;">Try Again</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
+// QUIZ DATA
+const quizQuestions = [
+  {
+    question: "What is the first step to reduce data collection on your devices?",
+    options: [
+      "Delete all your accounts",
+      "Review your privacy settings on each app",
+      "Stop using the internet entirely",
+      "Switch to a new phone"
+    ],
+    correct: 1,
+    explanation: "Reviewing privacy settings is the quickest and most effective immediate action. Most platforms have built-in controls to limit data collection."
+  },
+  {
+    question: "Which Australian law gives you the right to access your personal data?",
+    options: [
+      "The Internet Safety Act",
+      "The Privacy Act 1988 and Australian Privacy Principles (APPs)",
+      "The Consumer Protection Act",
+      "The Digital Rights Act"
+    ],
+    correct: 1,
+    explanation: "The Privacy Act 1988 and APPs are the main Australian laws that protect your data rights, including the right to access, correct, and complain."
+  },
+  {
+    question: "How long does an organisation have to provide your personal data when you request it?",
+    options: [
+      "7 days",
+      "14 days",
+      "30 days",
+      "60 days"
+    ],
+    correct: 2,
+    explanation: "Australian Privacy Principles require organisations to provide personal data within 30 days of a Data Access Request."
+  },
+  {
+    question: "Which of these is recommended to replace Google Search for better privacy?",
+    options: [
+      "Yahoo Search",
+      "DuckDuckGo",
+      "Bing",
+      "Ask.com"
+    ],
+    correct: 1,
+    explanation: "DuckDuckGo is specifically designed to not track your searches, making it a privacy-focused alternative to Google."
+  },
+  {
+    question: "What's the difference between account deactivation and deletion?",
+    options: [
+      "They're the same thing",
+      "Deactivation pauses your account, deletion removes data (though some may be retained)",
+      "Deletion is temporary, deactivation is permanent",
+      "There's no practical difference"
+    ],
+    correct: 1,
+    explanation: "Deactivation is temporary and keeps your data, while deletion removes the account. However, some platforms may retain copies of your data for legal reasons."
+  }
+];
+
+let currentQuestionIndex = 0;
+let selectedAnswers = new Array(quizQuestions.length).fill(-1);
+let quizSubmitted = false;
+
+// Initialize quiz
+function initQuiz() {
+  document.getElementById('totalQuestions').textContent = quizQuestions.length;
+  renderQuestion();
+  updateProgress();
+  updateButtons();
+}
+
+// Render current question
+function renderQuestion() {
+  const container = document.getElementById('quizContent');
+  const question = quizQuestions[currentQuestionIndex];
+  const isAnswered = selectedAnswers[currentQuestionIndex] !== -1;
+  const selectedIdx = selectedAnswers[currentQuestionIndex];
+
+  let html = `
+    <div class="quiz-container active">
+      <div class="quiz-question">
+        <h3>${question.question}</h3>
+        <div class="quiz-options">
+  `;
+
+  question.options.forEach((option, idx) => {
+    let className = 'quiz-option';
+    if (selectedIdx !== -1) {
+      if (idx === question.correct) className += ' correct';
+      else if (idx === selectedIdx && selectedIdx !== question.correct) className += ' incorrect';
+    } else if (idx === selectedIdx) {
+      className += ' selected';
+    }
+    
+    html += `<div class="${className}" ${selectedIdx === -1 ? `onclick="selectOption(${idx})"` : ''}><span class="quiz-option-text">${option}</span></div>`;
+  });
+
+  html += `</div>`;
+
+ if (selectedIdx !== -1) {
+    const isCorrect = selectedIdx === question.correct;
+    html += `
+      <div class="quiz-feedback show ${isCorrect ? 'correct' : 'incorrect'}">
+        <strong>${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</strong><br>${question.explanation}
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// Select an option
+function selectOption(idx) {
+  // Prevent re-answering
+  if (selectedAnswers[currentQuestionIndex] !== -1) return;
+
+  selectedAnswers[currentQuestionIndex] = idx;
+
+  // Temporarily mark quiz as "submitted" for this question
+  renderQuestion(); 
+  updateButtons();
+}
+
+// Navigate questions
+function nextQuestion() {
+  if (currentQuestionIndex < quizQuestions.length - 1) {
+    currentQuestionIndex++;
+    renderQuestion();
+    updateProgress();
+    updateButtons();
+
+  }
+}
+
+function previousQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    renderQuestion();
+    updateProgress();
+    updateButtons();
+
+  }
+}
+
+// Update progress bar
+function updateProgress() {
+  const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+}
+
+// Update button states
+function updateButtons() {
+  const isLastQuestion = currentQuestionIndex === quizQuestions.length - 1;
+  const isAnswered = selectedAnswers[currentQuestionIndex] !== -1;
+  
+  document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+  document.getElementById('nextBtn').style.display = isLastQuestion ? 'none' : 'inline-block';
+  document.getElementById('submitBtn').style.display = (isLastQuestion && !quizSubmitted) ? 'inline-block' : 'none';
+}
+
+// Submit quiz
+function submitQuiz() {
+  quizSubmitted = true;
+  
+  // Calculate score
+  let correct = 0;
+  selectedAnswers.forEach((ans, idx) => {
+    if (ans === quizQuestions[idx].correct) correct++;
+  });
+  
+  const score = Math.round((correct / quizQuestions.length) * 100);
+  
+  renderQuestion();
+  
+  // Show results after a delay
+  setTimeout(() => {
+    showResults(correct, score);
+  }, 300);
+  
+  updateButtons();
+}
+
+// Show results
+function showResults(correct, score) {
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = 'inline-block';
+  document.getElementById('prevBtn').disabled = false;
+  
+  const resultsHtml = `
+    <div class="quiz-results show" style="margin-top: 40px;">
+      <div class="quiz-score">${score}%</div>
+      <div class="quiz-results-text">
+        ${score >= 80 ? "🎉 Excellent work!" : score >= 60 ? "📚 Good effort!" : "📖 Keep learning!"}
+      </div>
+      <div class="quiz-results-detail">
+        You answered <strong>${correct} out of ${quizQuestions.length}</strong> questions correctly.<br>
+        ${score >= 80 ? "You've got a solid understanding of data rights and privacy protection!" : "Review the explanations above and try again to improve your score."}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('quizContent').insertAdjacentHTML('afterend', resultsHtml);
+}
+
+// Restart quiz
+function restartQuiz() {
+  currentQuestionIndex = 0;
+  selectedAnswers = new Array(quizQuestions.length).fill(-1);
+  quizSubmitted = false;
+  
+  const results = document.querySelector('.quiz-results');
+  if (results) results.remove();
+  
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('prevBtn').disabled = true;
+  
+  renderQuestion();
+  updateProgress();
+  updateButtons();
+}
+
+// Original cursor and reveal animations
 (function() {
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
@@ -415,8 +935,7 @@ body { cursor: none !important; }
   }
   animateRing();
 
-  /* elements that trigger hover expansion */
-  const interactive = '.action-card, .right-card, .tool-link';
+  const interactive = '.action-card, .right-card, .tool-link, .quiz-option, .quiz-button';
 
   document.addEventListener('mouseover', e => {
     if (e.target.matches(interactive) || e.target.closest(interactive)) {
@@ -438,13 +957,9 @@ body { cursor: none !important; }
     }
   });
 })();
-</script>
 
-
-   
-<script>
+// Reveal animations
 const reveals = document.querySelectorAll('.reveal');
-
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -455,6 +970,9 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.07 });
 
 reveals.forEach(r => obs.observe(r));
+
+// Initialize quiz on page load
+window.addEventListener('load', initQuiz);
 </script>
 
 </body>
